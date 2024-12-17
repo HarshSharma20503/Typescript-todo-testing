@@ -1,0 +1,7 @@
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    container_name: todo-app
+    restart: always
