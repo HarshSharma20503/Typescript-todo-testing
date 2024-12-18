@@ -1,5 +1,4 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -7,7 +6,6 @@ import { config } from './config';
 import todoRoutes from './routes/todoRoutes';
 import userRoutes from './routes/userRoutes';
 import { errorHandler } from './middleware/errorHandler';
-import logger from './utils/logger';
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -39,7 +37,5 @@ app.use('/api/users', userRoutes);
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
   errorHandler(err, req, res, next);
 });
-
-// Start server
 
 export default app;

@@ -1,13 +1,12 @@
-import app from './app';
 import { config } from './config';
+import app from './app';
 import logger from './utils/logger';
-import mongoose from 'mongoose';
+import { connect } from './config/db';
 
 app.listen(config.port, () => {
   logger.info(`Server is running on port ${config.port}`);
   logger.info('Connecting to MongoDB...');
-  mongoose
-    .connect(config.mongoUrl)
+  connect()
     .then(() => {
       logger.info('Connected to MongoDB');
     })

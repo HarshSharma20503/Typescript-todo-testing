@@ -17,11 +17,6 @@ const todoSchema = new Schema(
       maxLength: 1000,
       trim: true,
     },
-    timestamp: {
-      type: Date,
-      default: Date.now,
-      immutable: true,
-    },
     dueDate: {
       type: Date,
       validate: {

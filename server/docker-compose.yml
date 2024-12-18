@@ -5,3 +5,5 @@ services:
       - '27017:27017'
     container_name: todo-app
     restart: always
+    volumes:
+      - /Users/xoxoharsh/Developer/Projects/todo-app/server/data:/data/db

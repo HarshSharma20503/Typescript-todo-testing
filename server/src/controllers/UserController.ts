@@ -9,14 +9,40 @@ export class UserController extends BaseController<UserService> {
 
   register = async (req: Request, res: Response, next: NextFunction) => {
     this.handleRequest(req, res, next, async () => {
-      return this.service.register(req.body);
+      const { user, token } = await this.service.register(req.body);
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none',
+      });
+      return {
+        user: {
+          _id: user._id,
+          email: user.email,
+          name: user.name,
+        },
+        token,
+      };
     });
   };
 
   login = async (req: Request, res: Response, next: NextFunction) => {
     this.handleRequest(req, res, next, async () => {
       const { email, password } = req.body;
-      return this.service.login(email, password);
+      const { user, token } = await this.service.login(email, password);
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none',
+      });
+      return {
+        user: {
+          _id: user._id,
+          email: user.email,
+          name: user.name,
+        },
+        token,
+      };
     });
   };
 }
