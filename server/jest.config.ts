@@ -14,4 +14,9 @@ export default {
       statements: 80,
     },
   },
+  testEnvironmentOptions: {
+    env: {
+      NODE_ENV: 'production',
+    },
+  },
 };

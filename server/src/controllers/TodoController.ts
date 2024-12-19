@@ -12,7 +12,9 @@ export class TodoController extends BaseController<TodoService> {
   createTodo = async (req: AuthRequest, res: Response, next: NextFunction) => {
     this.handleRequest(req, res, next, async () => {
       const todoData = { ...req.body, userId: req.userId };
-      return this.service.create(todoData);
+      const todo = this.service.create(todoData);
+      res.status(201);
+      return todo;
     });
   };
 
