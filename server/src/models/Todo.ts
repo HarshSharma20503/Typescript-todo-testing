@@ -1,8 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { ITodo, TodoStatus } from '../types';
 
-// interface ITodoDocument extends Omit<ITodo, '_id'>, Document {}
-
 const todoSchema = new Schema(
   {
     title: {
@@ -19,17 +17,17 @@ const todoSchema = new Schema(
     },
     dueDate: {
       type: Date,
-      validate: {
-        validator: (value: Date) => {
-          return !value || value > new Date();
-        },
-        message: 'Due date must be after creation date',
-      },
     },
     tags: [
       {
         type: String,
         trim: true,
+        validate: {
+          validator: function (value: string) {
+            return this.tags.filter((tag: string) => tag === value).length === 1;
+          },
+          message: 'Tags must be unique',
+        },
       },
     ],
     status: {
@@ -48,6 +46,24 @@ const todoSchema = new Schema(
     timestamps: true,
   }
 );
+
+// Move the validation logic to pre-save middleware
+todoSchema.pre('save', function (next) {
+  // Check if document is new or dueDate is modified
+  if ((this.isNew || this.modifiedPaths().includes('dueDate')) && this.dueDate) {
+    if (this.dueDate < new Date()) {
+      const error = new Error('Due date must be after creation date');
+      return next(error);
+    }
+  }
+
+  // Update status to OVERDUE if applicable
+  if (this.dueDate && this.dueDate < new Date() && this.status !== TodoStatus.COMPLETED) {
+    this.status = TodoStatus.OVERDUE;
+  }
+
+  next();
+});
 
 // Index for faster queries
 todoSchema.index({ userId: 1, status: 1 });

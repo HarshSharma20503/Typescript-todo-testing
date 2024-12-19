@@ -19,11 +19,6 @@ export class TodoService extends BaseService<ITodo> {
 
     todo.status = status;
 
-    // Check for overdue status
-    if (status === TodoStatus.COMPLETED && todo.dueDate && todo.dueDate < new Date()) {
-      todo.status = TodoStatus.OVERDUE;
-    }
-
     return todo.save();
   }
 
