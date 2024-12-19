@@ -1,5 +1,7 @@
 # Todo Application
 
+`Note`: Incomplete but can take reference for Typescript config, scripts, unit and integration testing, OOPS based implementation.
+
 A full-stack Todo application built with MERN stack (MongoDB, Express, React, Node.js) featuring user authentication, task management.
 
 ## 🚀 Features
